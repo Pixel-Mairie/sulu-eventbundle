@@ -17,7 +17,7 @@ class EventController extends AbstractController
     /**
      * @return string[]
      */
-    public static function getSubscribedServices()
+    public static function getSubscribedServices(): array
     {
         $subscribedServices = parent::getSubscribedServices();
 
@@ -28,9 +28,13 @@ class EventController extends AbstractController
         return $subscribedServices;
     }
 
-    public function indexAction(Event $event, $attributes = [], $preview = false, $partial = false): Response
+    /**
+     * @param array<mixed> $attributes
+     * @throws \Exception
+     */
+    public function indexAction(Event $event, array $attributes = [], bool $preview = false, bool $partial = false): Response
     {
-        if (!$event->getSeo() || (isset($event->getSeo()['title']) && !$event->getSeo()['title'])) {
+        if (! $event->getSeo() || (isset($event->getSeo()['title']) && ! $event->getSeo()['title'])) {
             $seo = [
                 "title" => $event->getName(),
             ];
@@ -55,7 +59,7 @@ class EventController extends AbstractController
                 $parameters
             );
         } else {
-            if (!$event->getEnabled()) {
+            if (! $event->getEnabled()) {
                 throw $this->createNotFoundException();
             }
             $content = $this->renderView(
@@ -68,11 +72,11 @@ class EventController extends AbstractController
     }
 
     /**
-     * @return array<string, array>
+     * @return array<string, array<string>>
      */
     protected function getLocalizationsArrayForEntity(Event $entity): array
     {
-        $routes = $this->get('sulu.repository.route')->findAllByEntity(Event::class, (string)$entity->getId());
+        $routes = $this->get('sulu.repository.route')->findAllByEntity(Event::class, (string) $entity->getId());
 
         $localizations = [];
         foreach ($routes as $route) {
@@ -82,7 +86,10 @@ class EventController extends AbstractController
                 $route->getLocale()
             );
 
-            $localizations[$route->getLocale()] = ['locale' => $route->getLocale(), 'url' => $url];
+            $localizations[$route->getLocale()] = [
+                'locale' => $route->getLocale(),
+                'url' => $url,
+            ];
         }
         return $localizations;
     }
@@ -94,7 +101,7 @@ class EventController extends AbstractController
      * @param mixed $block
      * @param mixed $attributes
      */
-    protected function renderBlock($template, $block, $attributes = [])
+    protected function renderBlock($template, $block, $attributes = []): string
     {
         $twig = $this->get('twig');
         $attributes = $twig->mergeGlobals($attributes);
@@ -118,6 +125,9 @@ class EventController extends AbstractController
         }
     }
 
+    /**
+     * @param array<mixed> $parameters
+     */
     protected function renderPreview(string $view, array $parameters = []): string
     {
         $parameters['previewParentTemplate'] = $view;

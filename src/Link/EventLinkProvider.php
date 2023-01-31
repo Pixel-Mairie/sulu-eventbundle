@@ -14,6 +14,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class EventLinkProvider implements LinkProviderInterface
 {
     private EventRepository $eventRepository;
+
     private TranslatorInterface $translator;
 
     public function __construct(EventRepository $eventRepository, TranslatorInterface $translator)
@@ -22,9 +23,6 @@ class EventLinkProvider implements LinkProviderInterface
         $this->translator = $translator;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getConfiguration()
     {
         return LinkConfigurationBuilder::create()
@@ -38,16 +36,16 @@ class EventLinkProvider implements LinkProviderInterface
             ->getLinkConfiguration();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function preload(array $hrefs, $locale, $published = true): array
     {
+        $result = [];
         if (0 === count($hrefs)) {
-            return [];
+            return $result;
         }
 
-        $items = $this->eventRepository->findBy(['id' => $hrefs]); // load items by id
+        $items = $this->eventRepository->findBy([
+            'id' => $hrefs,
+        ]); // load items by id
         foreach ($items as $item) {
             $result[] = new LinkItem($item->getId(), $item->getName(), $item->getRoutePath(), $item->getEnabled()); // create link-item foreach item
         }

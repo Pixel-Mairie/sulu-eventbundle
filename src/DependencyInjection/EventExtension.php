@@ -15,7 +15,6 @@ class EventExtension extends Extension implements PrependExtensionInterface
 {
     use PersistenceExtensionTrait;
 
-
     public function prepend(ContainerBuilder $container): void
     {
         if ($container->hasExtension('sulu_admin')) {
@@ -41,9 +40,9 @@ class EventExtension extends Extension implements PrependExtensionInterface
                         ],
                         'event_settings' => [
                             'routes' => [
-                                'detail' => 'event.get_event-settings'
-                            ]
-                        ]
+                                'detail' => 'event.get_event-settings',
+                            ],
+                        ],
                     ],
                     'field_type_options' => [
                         'selection' => [

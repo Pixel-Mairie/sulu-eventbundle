@@ -25,7 +25,7 @@ class EventDataItem implements ItemInterface
      */
     public function getId(): string
     {
-        return (string)$this->entity->getId();
+        return (string) $this->entity->getId();
     }
 
     /**
@@ -33,7 +33,7 @@ class EventDataItem implements ItemInterface
      */
     public function getTitle(): string
     {
-        return (string)$this->entity->getName();
+        return (string) $this->entity->getName();
     }
 
     /**

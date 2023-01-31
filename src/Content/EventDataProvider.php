@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Pixel\EventBundle\Content;
 
+use Sulu\Component\Content\Compat\PropertyParameter;
 use Sulu\Component\Serializer\ArraySerializerInterface;
 use Sulu\Component\SmartContent\ItemInterface;
 use Sulu\Component\SmartContent\Orm\BaseDataProvider;
@@ -12,9 +13,6 @@ use Symfony\Component\HttpFoundation\RequestStack;
 
 class EventDataProvider extends BaseDataProvider
 {
-    /**
-     * @var RequestStack
-     */
     private RequestStack $requestStack;
 
     public function __construct(DataProviderRepositoryInterface $repository, ArraySerializerInterface $serializer, RequestStack $requestStack)
@@ -26,15 +24,24 @@ class EventDataProvider extends BaseDataProvider
 
     public function getConfiguration()
     {
-        if (!$this->configuration) {
+        if (! $this->configuration) {
             $this->configuration = self::createConfigurationBuilder()
                 ->enableLimit()
                 ->enablePagination()
                 ->enablePresentAs()
                 ->enableSorting([
-                    ['column' => 'translation.name', 'title' => 'event.name'],
-                    ['column' => 'startDate', 'title' => 'event.start_date'],
-                    ['column' => 'endDate', 'title' => 'event.end_date'],
+                    [
+                        'column' => 'translation.name',
+                        'title' => 'event.name',
+                    ],
+                    [
+                        'column' => 'startDate',
+                        'title' => 'event.start_date',
+                    ],
+                    [
+                        'column' => 'endDate',
+                        'title' => 'event.end_date',
+                    ],
                 ])
                 ->getConfiguration();
         }
@@ -45,7 +52,7 @@ class EventDataProvider extends BaseDataProvider
     /**
      * Decorates result as data item.
      *
-     * @param array $data
+     * @param array<mixed> $data
      *
      * @return ItemInterface[]
      */
@@ -63,9 +70,9 @@ class EventDataProvider extends BaseDataProvider
      * Returns additional options for query creation.
      *
      * @param PropertyParameter[] $propertyParameter
-     * @param array $options
+     * @param array<mixed> $options
      *
-     * @return array
+     * @return array<mixed>
      */
     protected function getOptions(array $propertyParameter, array $options = [])
     {

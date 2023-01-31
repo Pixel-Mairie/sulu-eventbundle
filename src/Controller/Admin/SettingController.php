@@ -22,6 +22,7 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 class SettingController extends AbstractRestController implements ClassResourceInterface, SecuredControllerInterface
 {
     private EntityManagerInterface $entityManager;
+
     private MediaManagerInterface $mediaManager;
 
     public function __construct(
@@ -44,7 +45,7 @@ class SettingController extends AbstractRestController implements ClassResourceI
     public function putAction(Request $request): Response
     {
         $applicationSetting = $this->entityManager->getRepository(Setting::class)->findOneBy([]);
-        if (!$applicationSetting) {
+        if (! $applicationSetting) {
             $applicationSetting = new Setting();
             $this->entityManager->persist($applicationSetting);
         }
@@ -53,6 +54,9 @@ class SettingController extends AbstractRestController implements ClassResourceI
         return $this->handleView($this->view($applicationSetting));
     }
 
+    /**
+     * @param array<mixed> $data
+     */
     public function mapDataToEntity(array $data, Setting $entity): void
     {
         $defaultImageId = $data['defaultImage']['id'] ?? null;

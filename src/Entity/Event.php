@@ -17,9 +17,13 @@ use Sulu\Bundle\MediaBundle\Entity\MediaInterface;
 class Event
 {
     public const RESOURCE_KEY = 'events';
+
     public const LIST_KEY = 'events';
+
     public const FORM_KEY = 'event_details';
+
     public const SEO_FORM_KEY = 'seo';
+
     public const SECURITY_CONTEXT = 'event.events';
 
     /**
@@ -34,13 +38,13 @@ class Event
      * @ORM\Column(type="datetime_immutable")
      * @Serializer\Expose()
      */
-    private $startDate;
+    private \DateTimeImmutable $startDate;
 
     /**
      * @ORM\Column(type="datetime_immutable", nullable=true)
      * @Serializer\Expose()
      */
-    private $endDate;
+    private \DateTimeImmutable $endDate;
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
@@ -63,6 +67,7 @@ class Event
     /**
      * @ORM\Column(type="json", nullable=true)
      * @Serializer\Expose()
+     * @var array<mixed>|null
      */
     private ?array $location;
 
@@ -87,6 +92,7 @@ class Event
     /**
      * @ORM\Column(type="json", nullable=true)
      * @Serializer\Expose()
+     * @var array<mixed>|null
      */
     private ?array $images;
 
@@ -102,9 +108,6 @@ class Event
      */
     private ?string $defaultLocale;
 
-    /**
-     * @var string
-     */
     private string $locale = 'fr';
 
     public function __construct()
@@ -113,9 +116,6 @@ class Event
         $this->translations = new ArrayCollection();
     }
 
-    /**
-     * @return int|null
-     */
     public function getId(): ?int
     {
         return $this->id;
@@ -123,12 +123,11 @@ class Event
 
     /**
      * @Serializer\VirtualProperty(name="name")
-     * @return string
      */
     public function getName(): ?string
     {
         $translation = $this->getTranslation($this->locale);
-        if (!$translation) {
+        if (! $translation) {
             return null;
         }
         return $translation->getName();
@@ -136,20 +135,16 @@ class Event
 
     protected function getTranslation(string $locale): ?EventTranslation
     {
-        if (!$this->translations->containsKey($locale)) {
+        if (! $this->translations->containsKey($locale)) {
             return null;
         }
         return $this->translations->get($locale);
     }
 
-    /**
-     * @param string $name
-     * @return self
-     */
     public function setName(string $name): self
     {
         $translation = $this->getTranslation($this->locale);
-        if (!$translation) {
+        if (! $translation) {
             $translation = $this->createTranslation($this->locale);
         }
         $translation->setName($name);
@@ -165,25 +160,20 @@ class Event
 
     /**
      * @Serializer\VirtualProperty(name="description")
-     * @return string|null
      */
     public function getDescription(): ?string
     {
         $translation = $this->getTranslation($this->locale);
-        if (!$translation) {
+        if (! $translation) {
             return null;
         }
         return $translation->getDescription();
     }
 
-    /**
-     * @param string|null $description
-     * @return self
-     */
     public function setDescription(?string $description): self
     {
         $translation = $this->getTranslation($this->locale);
-        if (!$translation) {
+        if (! $translation) {
             $translation = $this->createTranslation($this->locale);
         }
         $translation->setDescription($description);
@@ -192,12 +182,11 @@ class Event
 
     /**
      * @Serializer\VirtualProperty(name="route")
-     * @return string|null
      */
     public function getRoutePath(): ?string
     {
         $translation = $this->getTranslation($this->locale);
-        if (!$translation) {
+        if (! $translation) {
             return null;
         }
         return $translation->getRoutePath();
@@ -206,7 +195,7 @@ class Event
     public function setRoutePath(string $routePath): self
     {
         $translation = $this->getTranslation($this->locale);
-        if (!$translation) {
+        if (! $translation) {
             $translation = $this->createTranslation($this->locale);
         }
         $translation->setRoutePath($routePath);
@@ -215,17 +204,20 @@ class Event
 
     /**
      * @Serializer\VirtualProperty(name="seo")
-     * @return array|null
+     * @return array<mixed>|null
      */
     public function getSeo(): ?array
     {
         $translation = $this->getTranslation($this->locale);
-        if (!$translation) {
+        if (! $translation) {
             return null;
         }
         return $translation->getSeo();
     }
 
+    /**
+     * @return array<array<string>>
+     */
     protected function emptySeo(): array
     {
         return [
@@ -236,32 +228,33 @@ class Event
                 "canonicalUrl" => "",
                 "noIndex" => "",
                 "noFollow" => "",
-                "hideinSitemap" => ""
-            ]
+                "hideinSitemap" => "",
+            ],
         ];
     }
 
     /**
      * @Serializer\VirtualProperty(name="ext")
-     * @return array|null
+     * @return array<mixed>|null
      */
     public function getExt(): ?array
     {
         $translation = $this->getTranslation($this->locale);
-        if (!$translation) {
+        if (! $translation) {
             return null;
         }
-        return ($translation->getSeo()) ? ['seo' => $translation->getSeo()] : $this->emptySeo();
+        return ($translation->getSeo()) ? [
+            'seo' => $translation->getSeo(),
+        ] : $this->emptySeo();
     }
 
     /**
-     * @param array|null $seo
-     * @return self
+     * @param array<mixed>|null $seo
      */
     public function setSeo(?array $seo): self
     {
         $translation = $this->getTranslation($this->locale);
-        if (!$translation) {
+        if (! $translation) {
             $translation = $this->createTranslation($this->locale);
         }
         $translation->setSeo($seo);
@@ -301,7 +294,7 @@ class Event
     }
 
     /**
-     * @return array|null
+     * @return array<mixed>|null
      */
     public function getLocation(): ?array
     {
@@ -309,16 +302,13 @@ class Event
     }
 
     /**
-     * @param array|null $location
+     * @param array<mixed>|null $location
      */
     public function setLocation(?array $location): void
     {
         $this->location = $location;
     }
 
-    /**
-     * @return string
-     */
     public function getUrl(): ?string
     {
         return $this->url;
@@ -332,9 +322,6 @@ class Event
         $this->url = $url;
     }
 
-    /**
-     * @return string|null
-     */
     public function getEmail(): ?string
     {
         return $this->email;
@@ -348,9 +335,6 @@ class Event
         $this->email = $email;
     }
 
-    /**
-     * @return string|null
-     */
     public function getPhoneNumber(): ?string
     {
         return $this->phoneNumber;
@@ -381,70 +365,49 @@ class Event
         return null;
     }
 
-    /**
-     * @return MediaInterface|null
-     */
     public function getImage(): ?MediaInterface
     {
         return $this->image;
     }
 
-    /**
-     * @param MediaInterface|null $image
-     */
     public function setImage(?MediaInterface $image): void
     {
         $this->image = $image;
     }
 
-    /**
-     * @return MediaInterface|null
-     */
     public function getPdf(): ?MediaInterface
     {
         return $this->pdf;
     }
 
-    /**
-     * @param MediaInterface|null $pdf
-     */
     public function setPdf(?MediaInterface $pdf): void
     {
         $this->pdf = $pdf;
     }
 
-    /**
-     * @return bool|null
-     */
     public function getEnabled(): ?bool
     {
         return $this->enabled;
     }
 
-    /**
-     * @param bool|null $enabled
-     */
     public function setEnabled(?bool $enabled): void
     {
         $this->enabled = $enabled;
     }
 
+    /**
+     * @return array<string, EventTranslation>
+     */
     public function getTranslations(): array
     {
         return $this->translations->toArray();
     }
 
-    /**
-     * @return string|null
-     */
     public function getDefaultLocale(): ?string
     {
         return $this->defaultLocale;
     }
 
-    /**
-     * @param string|null $defaultLocale
-     */
     public function setDefaultLocale(?string $defaultLocale): void
     {
         $this->defaultLocale = $defaultLocale;
@@ -462,7 +425,7 @@ class Event
     }
 
     /**
-     * @return array|null
+     * @return array<mixed>|null
      */
     public function getImages(): ?array
     {
@@ -470,7 +433,7 @@ class Event
     }
 
     /**
-     * @param array|null $images
+     * @param array<mixed>|null $images
      */
     public function setImages(?array $images): void
     {

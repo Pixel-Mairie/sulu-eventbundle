@@ -37,13 +37,16 @@ class EventRepository extends EntityRepository implements DataProviderRepository
     public function findById(int $id, string $locale): ?Event
     {
         $event = $this->find($id);
-        if (!$event) {
+        if (! $event) {
             return null;
         }
         $event->setLocale($locale);
         return $event;
     }
 
+    /**
+     * @return array<Event>
+     */
     public function findAllForSitemap(int $page, int $limit): array
     {
         $offset = ($page * $limit) - $limit;
@@ -53,6 +56,11 @@ class EventRepository extends EntityRepository implements DataProviderRepository
         return $this->findBy($criteria, [], $limit, $offset);
     }
 
+    /**
+     * @return float|int|mixed|string
+     * @throws \Doctrine\ORM\NoResultException
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
     public function countForSitemap()
     {
         $query = $this->createQueryBuilder('e')
@@ -60,7 +68,10 @@ class EventRepository extends EntityRepository implements DataProviderRepository
         return $query->getQuery()->getSingleScalarResult();
     }
 
-    public function findAllScheduledEvents(int $limit)
+    /**
+     * @return array<Event>
+     */
+    public function findAllScheduledEvents(int $limit): array
     {
         $query = $this->createQueryBuilder('e')
             ->where('e.enabled = 1 AND (e.startDate >= :now OR (e.endDate IS NOT NULL AND e.endDate >= :now))')
@@ -71,15 +82,16 @@ class EventRepository extends EntityRepository implements DataProviderRepository
     }
 
     /**
-     * {@inheritdoc}
+     * @param string $alias
+     * @param string $locale
      */
-    public function appendJoins(QueryBuilder $queryBuilder, $alias, $locale)
+    public function appendJoins(QueryBuilder $queryBuilder, $alias, $locale): void
     {
         //$queryBuilder->addSelect('category')->leftJoin($alias . '.category', 'category');
         //$queryBuilder->addSelect($alias.'.category');
     }
 
-    public function appendCategoriesRelation(QueryBuilder $queryBuilder, $alias)
+    public function appendCategoriesRelation(QueryBuilder $queryBuilder, string $alias): string
     {
         return $alias . '.category';
         //$queryBuilder->addSelect($alias.'.category');

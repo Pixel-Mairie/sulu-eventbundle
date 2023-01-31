@@ -17,9 +17,11 @@ use Sulu\Component\Security\Authorization\SecurityCheckerInterface;
 class SettingAdmin extends Admin
 {
     public const TAB_VIEW = "event.settings";
+
     public const FORM_VIEW = "event.settings.form";
 
     private ViewBuilderFactoryInterface $viewBuilderFactory;
+
     private SecurityCheckerInterface $securityChecker;
 
     public function __construct(
@@ -69,10 +71,10 @@ class SettingAdmin extends Admin
                 'Setting' => [
                     Setting::SECURITY_CONTEXT => [
                         PermissionTypes::VIEW,
-                        PermissionTypes::EDIT
-                    ]
-                ]
-            ]
+                        PermissionTypes::EDIT,
+                    ],
+                ],
+            ],
         ];
     }
 }

@@ -31,7 +31,9 @@ class EventSelection extends SimpleContentType
             return [];
         }
 
-        $events = $this->entityManager->getRepository(Event::class)->findBy(['id' => $ids]);
+        $events = $this->entityManager->getRepository(Event::class)->findBy([
+            'id' => $ids,
+        ]);
 
         $idPositions = array_flip($ids);
         usort($events, function (Event $a, Event $b) use ($idPositions) {

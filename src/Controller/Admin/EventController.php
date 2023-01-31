@@ -48,39 +48,39 @@ class EventController extends AbstractRestController implements ClassResourceInt
      */
     private $viewHandler;
 
-    /**
-     * @var DoctrineListBuilderFactoryInterface
-     */
     private DoctrineListRepresentationFactory $doctrineListRepresentationFactory;
-
-
 
     /**
      * @var EntityManagerInterface
      */
     private $entityManager;
+
     private WebspaceManagerInterface $webspaceManager;
+
     private RouteManagerInterface $routeManager;
+
     private RouteRepositoryInterface $routeRepository;
+
     private MediaManagerInterface $mediaManager;
+
     private TrashManagerInterface $trashManager;
+
     private DomainEventCollectorInterface $domainEventCollector;
+
     private EventRepository $repository;
-    private CardRepository $cardRepository;
 
     public function __construct(
-        ViewHandlerInterface              $viewHandler,
+        ViewHandlerInterface $viewHandler,
         DoctrineListRepresentationFactory $doctrineListRepresentationFactory,
-        EntityManagerInterface            $entityManager,
-        WebspaceManagerInterface          $webspaceManager,
-        RouteManagerInterface             $routeManager,
-        RouteRepositoryInterface          $routeRepository,
-        MediaManagerInterface             $mediaManager,
-        TrashManagerInterface             $trashManager,
-        DomainEventCollectorInterface     $domainEventCollector,
-        EventRepository                   $repository,
-        CardRepository                    $cardRepository,
-        ?TokenStorageInterface            $tokenStorage = null
+        EntityManagerInterface $entityManager,
+        WebspaceManagerInterface $webspaceManager,
+        RouteManagerInterface $routeManager,
+        RouteRepositoryInterface $routeRepository,
+        MediaManagerInterface $mediaManager,
+        TrashManagerInterface $trashManager,
+        DomainEventCollectorInterface $domainEventCollector,
+        EventRepository $repository,
+        ?TokenStorageInterface $tokenStorage = null
     ) {
         $this->viewHandler = $viewHandler;
         $this->doctrineListRepresentationFactory = $doctrineListRepresentationFactory;
@@ -92,7 +92,6 @@ class EventController extends AbstractRestController implements ClassResourceInt
         $this->trashManager = $trashManager;
         $this->domainEventCollector = $domainEventCollector;
         $this->repository = $repository;
-        $this->cardRepository = $cardRepository;
         parent::__construct($viewHandler, $tokenStorage);
     }
 
@@ -102,7 +101,9 @@ class EventController extends AbstractRestController implements ClassResourceInt
         $listRepresentation = $this->doctrineListRepresentationFactory->createDoctrineListRepresentation(
             Event::RESOURCE_KEY,
             [],
-            ['locale' => $locale]
+            [
+                'locale' => $locale,
+            ]
         );
 
         return $this->handleView($this->view($listRepresentation));
@@ -111,7 +112,7 @@ class EventController extends AbstractRestController implements ClassResourceInt
     public function getAction(int $id, Request $request): Response
     {
         $event = $this->load($id, $request);
-        if (!$event) {
+        if (! $event) {
             throw new NotFoundHttpException();
         }
 
@@ -122,15 +123,15 @@ class EventController extends AbstractRestController implements ClassResourceInt
         return $this->handleView($this->view($event));
     }
 
-    protected function load(int $id, Request $request, $defaultLocale = null): ?Event
+    protected function load(int $id, Request $request, string $defaultLocale = null): ?Event
     {
-        return $this->repository->findById($id, ($defaultLocale) ? $defaultLocale : (string)$this->getLocale($request));
+        return $this->repository->findById($id, ($defaultLocale) ? $defaultLocale : (string) $this->getLocale($request));
     }
 
     public function putAction(Request $request, int $id): Response
     {
         $event = $this->load($id, $request);
-        if (!$event) {
+        if (! $event) {
             throw new NotFoundHttpException();
         }
         $data = $request->request->all();
@@ -144,6 +145,10 @@ class EventController extends AbstractRestController implements ClassResourceInt
         return $this->viewHandler->handle(View::create($event));
     }
 
+    /**
+     * @param array<mixed> $data
+     * @throws \Exception
+     */
     protected function mapDataToEntity(array $data, Event $entity, Request $request): void
     {
         $endDate = $data['endDate'] ?? null;
@@ -178,7 +183,7 @@ class EventController extends AbstractRestController implements ClassResourceInt
         foreach ($this->webspaceManager->getAllLocales() as $locale) {
             $this->routeManager->createOrUpdateByAttributes(
                 Event::class,
-                (string)$entity->getId(),
+                (string) $entity->getId(),
                 $locale,
                 $entity->getRoutePath(),
             );
@@ -206,7 +211,7 @@ class EventController extends AbstractRestController implements ClassResourceInt
 
     protected function create(Request $request): Event
     {
-        return $this->repository->create((string)$this->getLocale($request));
+        return $this->repository->create((string) $this->getLocale($request));
     }
 
     public function deleteAction(int $id): Response
@@ -231,7 +236,7 @@ class EventController extends AbstractRestController implements ClassResourceInt
         foreach ($this->webspaceManager->getAllLocales() as $locale) {
             $routes = $this->routeRepository->findAllByEntity(
                 Event::class,
-                (string)$entity->getId(),
+                (string) $entity->getId(),
                 $locale
             );
 

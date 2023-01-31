@@ -9,11 +9,8 @@ use Twig\TwigFunction;
 
 class SettingsExtension extends AbstractExtension
 {
-    private $entityManager;
+    private EntityManagerInterface $entityManager;
 
-    /**
-     * @param EntityManagerInterface $entityManager
-     */
     public function __construct(EntityManagerInterface $entityManager)
     {
         $this->entityManager = $entityManager;
@@ -26,7 +23,7 @@ class SettingsExtension extends AbstractExtension
         ];
     }
 
-    public function eventSettings()
+    public function eventSettings(): Setting
     {
         return $this->entityManager->getRepository(Setting::class)->findOneBy([]);
     }

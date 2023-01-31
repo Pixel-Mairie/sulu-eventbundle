@@ -15,15 +15,18 @@ use Sulu\Component\Rest\RestHelperInterface;
 class DoctrineListRepresentationFactory
 {
     private RestHelperInterface $restHelper;
+
     private ListRestHelperInterface $listRestHelper;
+
     private DoctrineListBuilderFactoryInterface $listBuilderFactory;
+
     private FieldDescriptorFactoryInterface $fieldDescriptorFactory;
 
     public function __construct(
-        RestHelperInterface                 $restHelper,
-        ListRestHelperInterface             $listRestHelper,
+        RestHelperInterface $restHelper,
+        ListRestHelperInterface $listRestHelper,
         DoctrineListBuilderFactoryInterface $listBuilderFactory,
-        FieldDescriptorFactoryInterface     $fieldDescriptorFactory
+        FieldDescriptorFactoryInterface $fieldDescriptorFactory
     ) {
         $this->restHelper = $restHelper;
         $this->listRestHelper = $listRestHelper;
@@ -38,9 +41,9 @@ class DoctrineListRepresentationFactory
      */
     public function createDoctrineListRepresentation(
         string $resourceKey,
-        array  $filters = [],
-        array  $parameters = [],
-        array  $includedFields = []
+        array $filters = [],
+        array $parameters = [],
+        array $includedFields = []
     ): PaginatedRepresentation {
         /** @var DoctrineFieldDescriptor[] $fieldDescriptors */
         $fieldDescriptors = $this->fieldDescriptorFactory->getFieldDescriptors($resourceKey);
@@ -76,9 +79,9 @@ class DoctrineListRepresentationFactory
         return new PaginatedRepresentation(
             $items,
             $resourceKey,
-            (int)$listBuilder->getCurrentPage(),
-            (int)$listBuilder->getLimit(),
-            (int)$listBuilder->count()
+            (int) $listBuilder->getCurrentPage(),
+            (int) $listBuilder->getLimit(),
+            (int) $listBuilder->count()
         );
     }
 }

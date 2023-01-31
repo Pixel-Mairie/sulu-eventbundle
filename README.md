@@ -1,5 +1,5 @@
 # Event Bundle
 
-Ce bundle permet de gérer des évènements
+This bundle allows to manage events for the CMS Sulu
 
 

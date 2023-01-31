@@ -10,8 +10,15 @@ use Sulu\Bundle\ActivityBundle\Domain\Event\DomainEvent;
 class EventCreatedEvent extends DomainEvent
 {
     private Event $event;
+
+    /**
+     * @var mixed[]
+     */
     private array $payload;
 
+    /**
+     * @param array<mixed> $payload
+     */
     public function __construct(Event $event, array $payload)
     {
         parent::__construct();
@@ -41,7 +48,7 @@ class EventCreatedEvent extends DomainEvent
 
     public function getResourceId(): string
     {
-        return (string)$this->event->getId();
+        return (string) $this->event->getId();
     }
 
     public function getResourceTitle(): ?string

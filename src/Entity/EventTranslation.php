@@ -42,7 +42,7 @@ class EventTranslation implements AuditableInterface
      * @ORM\Column(type="string")
      * @Serializer\Expose()
      */
-    private $name;
+    private string $name;
 
     /**
      * @ORM\Column(type="text", nullable=true)
@@ -61,6 +61,7 @@ class EventTranslation implements AuditableInterface
     /**
      * @ORM\Column(type="json", nullable=true)
      * @Serializer\Expose()
+     * @var array<mixed>|null
      */
     private ?array $seo = null;
 
@@ -70,33 +71,21 @@ class EventTranslation implements AuditableInterface
         $this->locale = $locale;
     }
 
-    /**
-     * @return int|null
-     */
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    /**
-     * @return Event
-     */
     public function getEvent(): Event
     {
         return $this->event;
     }
 
-    /**
-     * @return string
-     */
     public function getLocale(): string
     {
         return $this->locale;
     }
 
-    /**
-     * @param string $locale
-     */
     public function setLocale(string $locale): void
     {
         $this->locale = $locale;
@@ -118,40 +107,28 @@ class EventTranslation implements AuditableInterface
         $this->name = trim($name);
     }
 
-    /**
-     * @return string|null
-     */
     public function getDescription(): ?string
     {
         return $this->description;
     }
 
-    /**
-     * @param string|null $description
-     */
     public function setDescription(?string $description): void
     {
         $this->description = $description;
     }
 
-    /**
-     * @return string
-     */
     public function getRoutePath(): string
     {
         return $this->routePath ?? '';
     }
 
-    /**
-     * @param string $routePath
-     */
     public function setRoutePath(string $routePath): void
     {
         $this->routePath = $routePath;
     }
 
     /**
-     * @return array|null
+     * @return array<mixed>|null
      */
     public function getSeo(): ?array
     {
@@ -159,7 +136,7 @@ class EventTranslation implements AuditableInterface
     }
 
     /**
-     * @param array|null $seo
+     * @param array<mixed>|null $seo
      */
     public function setSeo(?array $seo): void
     {

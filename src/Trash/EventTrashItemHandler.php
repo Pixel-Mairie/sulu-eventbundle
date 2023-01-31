@@ -22,8 +22,11 @@ use Sulu\Bundle\TrashBundle\Domain\Repository\TrashItemRepositoryInterface;
 class EventTrashItemHandler implements StoreTrashItemHandlerInterface, RestoreTrashItemHandlerInterface, RestoreConfigurationProviderInterface
 {
     private TrashItemRepositoryInterface $trashItemRepository;
+
     private EntityManagerInterface $entityManager;
+
     private DoctrineRestoreHelperInterface $doctrineRestoreHelper;
+
     private DomainEventCollectorInterface $domainEventCollector;
 
     public function __construct(
@@ -62,12 +65,12 @@ class EventTrashItemHandler implements StoreTrashItemHandlerInterface, RestoreTr
             "url" => $resource->getUrl(),
             "email" => $resource->getEmail(),
             "phoneNumber" => $resource->getPhoneNumber(),
-            "images" => $resource->getImages()
+            "images" => $resource->getImages(),
         ];
 
         return $this->trashItemRepository->create(
             Event::RESOURCE_KEY,
-            (string)$resource->getId(),
+            (string) $resource->getId(),
             $resource->getName(),
             $data,
             null,
@@ -81,7 +84,7 @@ class EventTrashItemHandler implements StoreTrashItemHandlerInterface, RestoreTr
     public function restore(TrashItemInterface $trashItem, array $restoreFormData = []): object
     {
         $data = $trashItem->getRestoreData();
-        $eventId = (int)$trashItem->getResourceId();
+        $eventId = (int) $trashItem->getResourceId();
         $event = new Event();
         $event->setName($data['name']);
         $event->setDescription($data['description']);
@@ -111,14 +114,14 @@ class EventTrashItemHandler implements StoreTrashItemHandlerInterface, RestoreTr
         return $event;
     }
 
-    private function createRoute(EntityManagerInterface $manager, int $id, string $slug, string $class)
+    private function createRoute(EntityManagerInterface $manager, int $id, string $slug, string $class): void
     {
         $route = new Route();
         $route->setPath($slug);
         $route->setLocale('fr');
         $route->setEntityClass($class);
-        $route->setEntityId($id);
-        $route->setHistory(0);
+        $route->setEntityId((string) $id);
+        $route->setHistory(false);
         $route->setCreated(new \DateTime());
         $route->setChanged(new \DateTime());
         $manager->persist($route);
@@ -126,6 +129,8 @@ class EventTrashItemHandler implements StoreTrashItemHandlerInterface, RestoreTr
 
     public function getConfiguration(): RestoreConfiguration
     {
-        return new RestoreConfiguration(null, EventAdmin::EVENT_EDIT_FORM_VIEW, ['id' => 'id']);
+        return new RestoreConfiguration(null, EventAdmin::EVENT_EDIT_FORM_VIEW, [
+            'id' => 'id',
+        ]);
     }
 }

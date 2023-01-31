@@ -18,7 +18,9 @@ class Setting implements AuditableInterface
     use AuditableTrait;
 
     public const RESOURCE_KEY = "event_settings";
+
     public const FORM_KEY = "event_settings";
+
     public const SECURITY_CONTEXT = "event_settings.settings";
 
     /**
@@ -42,41 +44,26 @@ class Setting implements AuditableInterface
      */
     private ?int $limitBlockEvent = null;
 
-    /**
-     * @return int|null
-     */
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    /**
-     * @return array|null
-     */
     public function getDefaultImage(): ?MediaInterface
     {
         return $this->defaultImage;
     }
 
-    /**
-     * @param MediaInterface|null $defaultImage
-     */
     public function setDefaultImage(?MediaInterface $defaultImage): void
     {
         $this->defaultImage = $defaultImage;
     }
 
-    /**
-     * @return int|null
-     */
     public function getLimitBlockEvent(): ?int
     {
         return $this->limitBlockEvent;
     }
 
-    /**
-     * @param int|null $limitBlockEvent
-     */
     public function setLimitBlockEvent(?int $limitBlockEvent): void
     {
         $this->limitBlockEvent = $limitBlockEvent;

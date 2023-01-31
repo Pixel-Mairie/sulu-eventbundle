@@ -32,7 +32,6 @@ class SingleEventSelection extends SimpleContentType
     }
 
     /**
-     * @param PropertyInterface $property
      * @return array<string, int|null>
      */
     public function getViewData(PropertyInterface $property): array

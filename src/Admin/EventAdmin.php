@@ -18,24 +18,29 @@ use Sulu\Component\Webspace\Manager\WebspaceManagerInterface;
 class EventAdmin extends Admin
 {
     public const EVENT_LIST_VIEW = 'event.events_list';
+
     public const EVENT_ADD_FORM_VIEW = 'event.event_add_form';
+
     public const EVENT_ADD_DETAILS_FORM = 'event.event_add_form_details';
+
     public const EVENT_EDIT_FORM_VIEW = 'event.event_edit_form';
+
     public const EVENT_EDIT_DETAILS_FORM_VIEW = 'event.event_edit_form_details';
+
     public const EVENT_EDIT_SEO_FORM_VIEW = 'event.event_edit_form_seo';
 
-    /**
-     * @var ViewBuilderFactoryInterface
-     */
     private ViewBuilderFactoryInterface $viewBuilderFactory;
+
     private SecurityCheckerInterface $securityChecker;
+
     private WebspaceManagerInterface $webspaceManager;
+
     private ActivityViewBuilderFactoryInterface $activityViewBuilderFactory;
 
     public function __construct(
-        ViewBuilderFactoryInterface         $viewBuilderFactory,
-        SecurityCheckerInterface            $securityChecker,
-        WebspaceManagerInterface            $webspaceManager,
+        ViewBuilderFactoryInterface $viewBuilderFactory,
+        SecurityCheckerInterface $securityChecker,
+        WebspaceManagerInterface $webspaceManager,
         ActivityViewBuilderFactoryInterface $activityViewBuilderFactory
     ) {
         $this->viewBuilderFactory = $viewBuilderFactory;

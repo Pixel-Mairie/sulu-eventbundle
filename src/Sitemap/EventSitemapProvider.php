@@ -12,17 +12,16 @@ use Sulu\Component\Webspace\Manager\WebspaceManagerInterface;
 
 class EventSitemapProvider implements SitemapProviderInterface
 {
-    /**
-     * @var EventRepository
-     */
     private EventRepository $eventRepository;
+
     private WebspaceManagerInterface $webspaceManager;
-    private array $locales = [];
 
     /**
-     * @param EventRepository $eventRepository
+     * @var array<string>
      */
-    public function __construct(eventRepository $eventRepository, WebspaceManagerInterface $webspaceManager)
+    private array $locales = [];
+
+    public function __construct(EventRepository $eventRepository, WebspaceManagerInterface $webspaceManager)
     {
         $this->eventRepository = $eventRepository;
         $this->webspaceManager = $webspaceManager;
@@ -32,7 +31,7 @@ class EventSitemapProvider implements SitemapProviderInterface
     {
         $locale = $this->getLocaleByHost($host);
         $result = [];
-        foreach ($this->eventRepository->findAllForSitemap((int)$page, (int)self::PAGE_SIZE) as $event) {
+        foreach ($this->eventRepository->findAllForSitemap((int) $page, (int) self::PAGE_SIZE) as $event) {
             //$event->setLocale($locale);
             $result[] = new SitemapUrl(
                 $scheme . '://' . $host . $event->getRoutePath(),
@@ -45,9 +44,9 @@ class EventSitemapProvider implements SitemapProviderInterface
         return $result;
     }
 
-    private function getLocaleByHost($host)
+    private function getLocaleByHost(string $host): ?string
     {
-        if (!\array_key_exists($host, $this->locales)) {
+        if (! \array_key_exists($host, $this->locales)) {
             $portalInformation = $this->webspaceManager->getPortalInformations();
             foreach ($portalInformation as $hostName => $portal) {
                 if ($hostName === $host) {
@@ -58,6 +57,7 @@ class EventSitemapProvider implements SitemapProviderInterface
         if (isset($this->locales[$host])) {
             return $this->locales[$host];
         }
+        return null;
     }
 
     public function createSitemap($scheme, $host): Sitemap
@@ -70,8 +70,8 @@ class EventSitemapProvider implements SitemapProviderInterface
         return 'event';
     }
 
-    public function getMaxPage($scheme, $host)
+    public function getMaxPage($scheme, $host): int
     {
-        return ceil($this->eventRepository->countForSitemap() / self::PAGE_SIZE);
+        return (int) ceil($this->eventRepository->countForSitemap() / self::PAGE_SIZE);
     }
 }
