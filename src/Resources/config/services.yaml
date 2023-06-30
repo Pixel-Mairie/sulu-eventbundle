@@ -5,6 +5,10 @@ services:
   Pixel\EventBundle\Controller\Website\:
     resource: '../../Controller/Website'
 
+  Pixel\EventBundle\Controller\Website\AjaxEventController:
+    bind:
+      $eventRepository: "@event.event_repository"
+
   Pixel\EventBundle\Twig\SettingsExtension:
     public: false
     autowire: true

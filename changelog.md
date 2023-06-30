@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.4.9 (30/06/2023)
+
++ Compatible Sulu 2.5
++ Ajout CI
+
 ## 2.4.8 (10/05/2022)
 
 + Ajout bloc pour les évènements
