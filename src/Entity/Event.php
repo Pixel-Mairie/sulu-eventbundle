@@ -44,7 +44,7 @@ class Event
      * @ORM\Column(type="datetime_immutable", nullable=true)
      * @Serializer\Expose()
      */
-    private \DateTimeImmutable $endDate;
+    private ?\DateTimeImmutable $endDate = null;
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
@@ -288,7 +288,7 @@ class Event
     /**
      * @param mixed $endDate
      */
-    public function setEndDate($endDate): void
+    public function setEndDate(?\DateTimeImmutable $endDate): void
     {
         $this->endDate = $endDate;
     }
