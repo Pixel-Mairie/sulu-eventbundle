@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.4.10 (21/11/2023)
+
+- Fix date de fin au niveau de l'entité
+
 ## 2.4.9 (30/06/2023)
 
 + Compatible Sulu 2.5
