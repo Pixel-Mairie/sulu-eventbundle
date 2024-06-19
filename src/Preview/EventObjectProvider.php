@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Pixel\EventBundle\Preview;
 
-use Pixel\DirectoryBundle\Repository\CardRepository;
 use Pixel\EventBundle\Entity\Event;
 use Pixel\EventBundle\Repository\EventRepository;
 use Sulu\Bundle\MediaBundle\Media\Manager\MediaManagerInterface;

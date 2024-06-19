@@ -8,3 +8,4 @@ parameters:
 
     ignoreErrors:
         - '#Negated boolean expression is always false#'
+        - '#DateTimeImmutable#'

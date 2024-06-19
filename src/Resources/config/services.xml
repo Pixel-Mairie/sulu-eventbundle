@@ -52,7 +52,6 @@
                  public="true">
             <argument type="service" id="event.event_repository"/>
             <argument type="service" id="sulu_media.media_manager"/>
-            <argument type="service" id="directory.card_repository"/>
             <tag name="sulu_preview.object_provider" provider-key="events"/>
         </service>
         <!-- Common -->
