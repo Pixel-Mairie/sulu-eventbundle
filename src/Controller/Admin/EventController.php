@@ -12,7 +12,6 @@ use FOS\RestBundle\Controller\Annotations\RouteResource;
 use FOS\RestBundle\Routing\ClassResourceInterface;
 use FOS\RestBundle\View\View;
 use FOS\RestBundle\View\ViewHandlerInterface;
-use Pixel\DirectoryBundle\Repository\CardRepository;
 use Pixel\EventBundle\Common\DoctrineListRepresentationFactory;
 use Pixel\EventBundle\Domain\Event\EventCreatedEvent;
 use Pixel\EventBundle\Domain\Event\EventModifiedEvent;

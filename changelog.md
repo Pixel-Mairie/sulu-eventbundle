@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.6.0 (19/06/2024)
+
++ Compatible Sulu 2.6 and Symfony 6.4
+
 ## 2.4.10 (21/11/2023)
 
 - Fix date de fin au niveau de l'entité
