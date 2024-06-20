@@ -1,6 +1,10 @@
 # Changelog
 
-## 2.6.0 (19/06/2024)
+## 2.6.2 (20/06/2024)
+
++ Update dependency on composer
+
+## 2.6.0 & 2.6.1 (19/06/2024)
 
 + Compatible Sulu 2.6 and Symfony 6.4
 
