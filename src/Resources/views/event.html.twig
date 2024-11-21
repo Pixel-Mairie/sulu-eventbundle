@@ -60,7 +60,7 @@
                     {% if event.pdf.id is defined %}
                         <p class="flex items-center flex-col sm:flex-row gap-x-2 mb-4 text-sm sm:text-base text-center sm:text-left">
                             {% set file = sulu_resolve_media(event.pdf.id, 'fr') %}
-                            <a href="{{ file.url }}" class="bg-pmBleu hover:bg-magenta rounded-full px-4 py-2 text-white text-center" target="_blank">{{ "download"|trans }}</a>
+                            <a href="{{ file.url }}" class="bg-pmBleu hover:bg-magenta rounded-full px-4 py-2 text-white text-center" rel="noopener" target="_blank">{{ "download"|trans }}</a>
                         </p>
                     {% endif %}
                 </div>
