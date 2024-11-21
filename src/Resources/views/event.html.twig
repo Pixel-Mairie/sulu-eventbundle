@@ -10,34 +10,23 @@
     } %}
 {% endblock %}
 
-
 {% block content %}
-    <div class="grid-cols-1 lg:grid-cols-3 grid gap-16 max-w-7xl mx-auto pb-16">
-        <div class="px-4 lg:px-4 col-span-2 mt-8">
+    <div class="grid-cols-1 lg:grid-cols-2 grid gap-16 max-w-7xl mx-auto pb-16">
+        <div>
             <div class="relative mb-10">
-                <div class="absolute inset-0 flex items-center" aria-hidden="true">
-                    <div class="w-full border-t border-bleu"></div>
-                </div>
-                <div class="relative flex justify-start">
-                            <span class="pr-6 bg-white text-2xl uppercase font-light text-gray-900">
-                             {{ event.name }}
-                                {% if event.endDate == null %}
-                                    <p class="text-magenta pb-4 text-base">{{ event.startDate|date('d/m/Y') }}</p>
+                {% if event.endDate == null %}
+                    <p class="text-magenta pb-4 text-base">{{ event.startDate|date('d/m/Y') }}</p>
                 {% else %}
-                                    <p class="text-magenta pb-4 text-base">{{ "from"|trans }} {{ event.startDate|date("d/m/Y") }} {{ "to"|trans }} {{ event.endDate|date("d/m/Y") }}</p>
-                                {% endif %}
-                            </span>
+                    <p class="text-magenta pb-4 text-base">{{ "from"|trans }} {{ event.startDate|date("d/m/Y") }} {{ "to"|trans }} {{ event.endDate|date("d/m/Y") }}</p>
+                {% endif %}
+
+                <div class="relative flex justify-start">
+                    <span class="pr-6 bg-white text-2xl uppercase font-light text-gray-900">
+                        {{ event.name }}
+                    </span>
                 </div>
             </div>
 
-            {% if event.image is not empty %}
-                <div class="item-image mb-10">
-                    {% set media = sulu_resolve_media(event.image.id, 'fr') %}
-                    <a href="{{ media.url }}" data-fancybox="gallery"> <img class="w-full rounded-lg"
-                                                                            src="{{ media.thumbnails['600'] }}"
-                                                                            alt="{{ event.name }}" ></a>
-                </div>
-            {% endif %}
             {% if event.url or event.email or event.phoneNumber or  event.pdf.id is defined %}
                 <div class="bg-gray p-8 rounded-xl ">
                     {% if event.url %}
@@ -70,9 +59,8 @@
                     {% endif %}
                     {% if event.pdf.id is defined %}
                         <p class="flex items-center flex-col sm:flex-row gap-x-2 mb-4 text-sm sm:text-base text-center sm:text-left">
-
                             {% set file = sulu_resolve_media(event.pdf.id, 'fr') %}
-                            <a href="{{ file.url }}" class="bg-bleu hover:bg-magenta rounded-full px-4 py-2 text-white text-center" target="_blank">{{ "download"|trans }}</a>
+                            <a href="{{ file.url }}" class="bg-pmBleu hover:bg-magenta rounded-full px-4 py-2 text-white text-center" target="_blank">{{ "download"|trans }}</a>
                         </p>
                     {% endif %}
                 </div>
@@ -85,29 +73,42 @@
                 <div class="masonry sm:masonry-sm  mt-8">
                     {% for image in event.images['ids'] %}
                         {% set img = sulu_resolve_media(image, 'fr') %}
-                        <a href="{{ img.url }}" data-fancybox="gallery"> <img src="{{ img.thumbnails['massonry'] }}"
-                                                                              class="break-inside rounded-xl "
-                                                                              alt="{{ img.title }}"/></a>
+                        <a href="{{ img.url }}" class="glightbox" data-gallery="gallery">
+                            <img src="{{ img.thumbnails['massonry'] }}" class="break-inside rounded-xl" alt="{{ img.title }}">
+                        </a>
                     {% endfor %}
                 </div>
             {% endif %}
         </div>
-        <div class="px-4 lg:px-0 space-y-8">
-            {% include 'includes/actions.html.twig' %}
+        <div class="px-4 mt-8">
+            {% if event.image is not empty %}
+                <div class="item-image mb-10">
+                    {% set media = sulu_resolve_media(event.image.id, 'fr') %}
+                    <a href="{{ media.url }}" class="glightbox" data-gallery="gallery">
+                        <img class="w-full rounded-lg" src="{{ media.thumbnails['600'] }}" alt="{{ event.name }}">
+                    </a>
+                </div>
+            {% endif %}
         </div>
-    </div>
     </div>
 {% endblock %}
 
 {% block style %}
     {{ parent() }}
     <link
-            rel="stylesheet"
-            href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.css"
+        rel="stylesheet"
+        href="{{ asset('bundles/event/glightbox/glightbox.min.css') }}"
     />
 {% endblock %}
+
 {% block javascripts %}
     {{ parent() }}
 
-    <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.umd.js"></script>
+    <script src="{{ asset('bundles/event/glightbox/glightbox.min.js') }}"></script>
+    <script>
+        const lightbox = GLightbox({
+            touchNavigation: true,
+            loop: true
+        });
+    </script>
 {% endblock %}
