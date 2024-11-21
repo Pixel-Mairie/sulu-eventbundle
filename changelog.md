@@ -1,5 +1,12 @@
 # Changelog
 
+## 2.6.3 (20/11/2024)
+
++ Replace Fancybox by GLightbox
++ Add reference for Sulu 2.6
++ Update readme
+- Remove composer.lock
+
 ## 2.6.2 (20/06/2024)
 
 + Update dependency on composer
