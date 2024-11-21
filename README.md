@@ -1,7 +1,7 @@
 # Event Bundle
 
 ![GitHub release (with filter)](https://img.shields.io/github/v/release/Pixel-Mairie/sulu-eventbundle?style=for-the-badge)
-[![Dependency](https://img.shields.io/badge/sulu-2.5-cca000.svg?style=for-the-badge)](https://sulu.io/)
+[![Dependency](https://img.shields.io/badge/sulu-2.6-cca000.svg?style=for-the-badge)](https://sulu.io/)
 
 ## Presentation
 
@@ -18,8 +18,7 @@ This bundle allows to manage events for the Sulu CMS
 * Trash
 
 ## Requirement
-* PHP >= 8.0
-* Sulu >= 2.4
+* PHP >= 8.1
 * Symfony >= 5.4
 * Composer
 

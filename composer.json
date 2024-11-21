@@ -6,15 +6,15 @@
     "sulu",
     "event"
   ],
-  "homepage": "https://github.com/Pixel-Developpement/sulu-event-bundle",
+  "homepage": "https://github.com/Pixel-Mairie/sulu-eventbundle",
   "license": "MIT",
   "authors": [
     {
-      "name": "Pixel Developpement"
+      "name": "Pixel Mairie"
     }
   ],
   "require": {
-    "php": "^8.0",
+    "php": "^8.1",
 
     "sulu/sulu": "^2.6",
     "symfony/config": "^5.0 || ^6.0",
