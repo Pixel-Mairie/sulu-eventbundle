@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.7.0 (04/05/2026)
+
++ Add reference for Sulu 2.6
++ Migration annotations to attributes for entities
++ Add command for desactivating events
+
 ## 2.6.3 (20/11/2024)
 
 + Replace Fancybox by GLightbox

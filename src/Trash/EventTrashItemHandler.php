@@ -95,7 +95,11 @@ class EventTrashItemHandler implements StoreTrashItemHandlerInterface, RestoreTr
             $event->setEndDate(new \DateTimeImmutable($data['endDate']['date']));
         }
         $event->setEnabled($data['enabled']);
-        $event->setImage($this->entityManager->find(MediaInterface::class, $data['imageId']));
+
+        if ($data['imageId']) {
+            $event->setImage($this->entityManager->find(MediaInterface::class, $data['imageId']));
+        }
+
         if ($data['pdfId']) {
             $event->setPdf($this->entityManager->find(MediaInterface::class, $data['pdfId']));
         }

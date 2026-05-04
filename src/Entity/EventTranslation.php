@@ -7,62 +7,43 @@ use JMS\Serializer\Annotation as Serializer;
 use Sulu\Component\Persistence\Model\AuditableInterface;
 use Sulu\Component\Persistence\Model\AuditableTrait;
 
-/**
- * @ORM\Entity()
- * @ORM\Table(name="event_translation")
- * @ORM\Entity(repositoryClass="Pixel\EventBundle\Repository\EventRepository")
- * @Serializer\ExclusionPolicy("all")
- */
+#[ORM\Entity(repositoryClass: "Pixel\EventBundle\Repository\EventRepository")]
+#[ORM\Table(name: "event_translation")]
+#[Serializer\ExclusionPolicy("all")]
 class EventTranslation implements AuditableInterface
 {
     use AuditableTrait;
 
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     *
-     * @Serializer\Expose()
-     */
+    #[ORM\Id()]
+    #[ORM\GeneratedValue()]
+    #[ORM\Column(type: "integer")]
+    #[Serializer\Expose()]
     private ?int $id = null;
 
-    /**
-     * @var Event
-     * @ORM\ManyToOne(targetEntity="Pixel\EventBundle\Entity\Event", inversedBy="translations")
-     * @ORM\JoinColumn(nullable=true)
-     */
-    private $event;
+    #[ORM\ManyToOne(targetEntity: "Pixel\EventBundle\Entity\Event", inversedBy: "translations")]
+    #[ORM\JoinColumn(nullable: true)]
+    private Event $event;
 
-    /**
-     * @ORM\Column(type="string", length=5)
-     */
+    #[ORM\Column(type: "string", length: 5)]
     private string $locale;
 
-    /**
-     * @ORM\Column(type="string")
-     * @Serializer\Expose()
-     */
+    #[ORM\Column(type: "string")]
+    #[Serializer\Expose()]
     private string $name;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     * @Serializer\Expose()
-     */
+    #[ORM\Column(type: "text", nullable: true)]
+    #[Serializer\Expose()]
     private ?string $description;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     * @Serializer\Expose()
-     *
-     * @Serializer\Expose()
-     */
+    #[ORM\Column(type: "string", length: 255)]
+    #[Serializer\Expose()]
     private string $routePath;
 
     /**
-     * @ORM\Column(type="json", nullable=true)
-     * @Serializer\Expose()
      * @var array<mixed>|null
      */
+    #[ORM\Column(type: "json", nullable: true)]
+    #[Serializer\Expose()]
     private ?array $seo = null;
 
     public function __construct(Event $event, string $locale)
