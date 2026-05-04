@@ -81,6 +81,17 @@ class EventRepository extends EntityRepository implements DataProviderRepository
         return $query->getQuery()->getResult();
     }
 
+    public function findPastEvents(int $nbDays): array
+    {
+        $deactivateDate = (new \DateTimeImmutable())->modify("-" . $nbDays . " days");
+
+        $query = $this->createQueryBuilder('e')
+            ->where("e.enabled = 1 AND (e.startDate <= :deactivateDate OR (e.endDate IS NOT NULL AND e.endDate <= :deactivateDate))")
+            ->setParameter("deactivateDate", $deactivateDate->format("Y-m-d H:i:s"));
+
+        return $query->getQuery()->getResult();
+    }
+
     /**
      * @param string $alias
      * @param string $locale
