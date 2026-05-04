@@ -3,6 +3,20 @@
            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
     <services>
+        <service id="pixel_event.event_reference_provider"
+                 class="Pixel\EventBundle\Reference\EventReferenceProvider">
+            <argument type="service" id="sulu_reference.reference_repository"/>
+        </service>
+
+        <service id="pixel_event.event_reference_refresher"
+                 class="Pixel\EventBundle\Reference\EventReferenceRefresher">
+            <argument type="service" id="pixel_event.event_reference_provider"/>
+            <argument type="service" id="event.event_repository"/>
+            <argument type="service" id="sulu_core.webspace.webspace_manager"/>
+            <argument>%sulu.context%</argument>
+            <tag name="sulu_reference.refresher"/>
+        </service>
+
         <service id="pixel_event.events_route_controller"
                  class="Pixel\EventBundle\Controller\Admin\EventController"
                  public="true">
@@ -16,6 +30,7 @@
             <argument type="service" id="sulu_trash.trash_manager"/>
             <argument type="service" id="sulu_activity.domain_event_collector"/>
             <argument type="service" id="event.event_repository"/>
+            <argument type="service" id="pixel_event.event_reference_provider"/>
             <argument type="service" id="security.token_storage"/>
             <tag name="sulu.context" context="admin"/>
         </service>

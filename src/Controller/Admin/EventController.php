@@ -17,6 +17,7 @@ use Pixel\EventBundle\Domain\Event\EventCreatedEvent;
 use Pixel\EventBundle\Domain\Event\EventModifiedEvent;
 use Pixel\EventBundle\Domain\Event\EventRemovedEvent;
 use Pixel\EventBundle\Entity\Event;
+use Pixel\EventBundle\Reference\EventReferenceProvider;
 use Pixel\EventBundle\Repository\EventRepository;
 use Sulu\Bundle\ActivityBundle\Application\Collector\DomainEventCollectorInterface;
 use Sulu\Bundle\MediaBundle\Media\Manager\MediaManagerInterface;
@@ -68,6 +69,8 @@ class EventController extends AbstractRestController implements ClassResourceInt
 
     private EventRepository $repository;
 
+    private EventReferenceProvider $eventReferenceProvider;
+
     public function __construct(
         ViewHandlerInterface $viewHandler,
         DoctrineListRepresentationFactory $doctrineListRepresentationFactory,
@@ -79,6 +82,7 @@ class EventController extends AbstractRestController implements ClassResourceInt
         TrashManagerInterface $trashManager,
         DomainEventCollectorInterface $domainEventCollector,
         EventRepository $repository,
+        EventReferenceProvider $eventReferenceProvider,
         ?TokenStorageInterface $tokenStorage = null
     ) {
         $this->viewHandler = $viewHandler;
@@ -91,6 +95,7 @@ class EventController extends AbstractRestController implements ClassResourceInt
         $this->trashManager = $trashManager;
         $this->domainEventCollector = $domainEventCollector;
         $this->repository = $repository;
+        $this->eventReferenceProvider = $eventReferenceProvider;
         parent::__construct($viewHandler, $tokenStorage);
     }
 
@@ -141,6 +146,7 @@ class EventController extends AbstractRestController implements ClassResourceInt
         );
         $this->entityManager->flush();
         $this->save($event);
+        $this->eventReferenceProvider->updateReferences($event, (string) $this->getLocale($request), 'admin');
         return $this->viewHandler->handle(View::create($event));
     }
 
@@ -205,6 +211,7 @@ class EventController extends AbstractRestController implements ClassResourceInt
             new EventCreatedEvent($event, $data)
         );
         $this->entityManager->flush();
+        $this->eventReferenceProvider->updateReferences($event, (string) $this->getLocale($request), 'admin');
         return $this->handleView($this->view($event, 201));
     }
 
