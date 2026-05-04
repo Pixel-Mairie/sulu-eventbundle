@@ -8,12 +8,9 @@ use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as Serializer;
 use Sulu\Bundle\MediaBundle\Entity\MediaInterface;
 
-/**
- * @ORM\Entity()
- * @ORM\Table(name="event")
- * @ORM\Entity(repositoryClass="Pixel\EventBundle\Repository\EventRepository")
- * @Serializer\ExclusionPolicy("all")
- * */
+#[ORM\Entity(repositoryClass: "Pixel\EventBundle\Repository\EventRepository")]
+#[ORM\Table(name: "event")]
+#[Serializer\ExclusionPolicy("all")]
 class Event
 {
     public const RESOURCE_KEY = 'events';
@@ -26,86 +23,66 @@ class Event
 
     public const SECURITY_CONTEXT = 'event.events';
 
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     * @Serializer\Expose()
-     */
+    #[ORM\Id()]
+    #[ORM\GeneratedValue()]
+    #[ORM\Column(type: "integer")]
+    #[Serializer\Expose()]
     private ?int $id = null;
 
-    /**
-     * @ORM\Column(type="datetime_immutable")
-     * @Serializer\Expose()
-     */
+    #[ORM\Column(type: "datetime_immutable")]
+    #[Serializer\Expose()]
     private \DateTimeImmutable $startDate;
 
-    /**
-     * @ORM\Column(type="datetime_immutable", nullable=true)
-     * @Serializer\Expose()
-     */
+    #[ORM\Column(type: "datetime_immutable", nullable: true)]
+    #[Serializer\Expose()]
     private ?\DateTimeImmutable $endDate = null;
 
-    /**
-     * @ORM\Column(type="boolean", nullable=true)
-     * @Serializer\Expose()
-     */
+    #[ORM\Column(type: "boolean", nullable: true)]
+    #[Serializer\Expose()]
     private ?bool $enabled;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=MediaInterface::class)
-     * @Serializer\Expose()
-     */
-    private ?MediaInterface $image;
+    #[ORM\ManyToOne(targetEntity: MediaInterface::class)]
+    #[Serializer\Expose()]
+    private ?MediaInterface $image = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=MediaInterface::class)
-     * @Serializer\Expose()
-     */
+    #[ORM\ManyToOne(targetEntity: MediaInterface::class)]
+    #[Serializer\Expose()]
     private ?MediaInterface $pdf = null;
 
     /**
-     * @ORM\Column(type="json", nullable=true)
-     * @Serializer\Expose()
      * @var array<mixed>|null
      */
+    #[ORM\Column(type: "json", nullable: true)]
+    #[Serializer\Expose()]
     private ?array $location;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     * @Serializer\Expose()
-     */
+    #[ORM\Column(type: "string", length: 255, nullable: true)]
+    #[Serializer\Expose()]
     private ?string $url;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     * @Serializer\Expose()
-     */
+    #[ORM\Column(type: "string", length: 255, nullable: true)]
+    #[Serializer\Expose()]
     private ?string $email;
 
-    /**
-     * @ORM\Column(type="string", nullable=true)
-     * @Serializer\Expose()
-     */
+    #[ORM\Column(type: "string", nullable: true)]
+    #[Serializer\Expose()]
     private ?string $phoneNumber;
 
     /**
-     * @ORM\Column(type="json", nullable=true)
-     * @Serializer\Expose()
      * @var array<mixed>|null
      */
+    #[ORM\Column(type: "json", nullable: true)]
+    #[Serializer\Expose()]
     private ?array $images;
 
     /**
      * @var Collection<string, EventTranslation>
-     * @ORM\OneToMany(targetEntity="Pixel\EventBundle\Entity\EventTranslation", mappedBy="event", cascade={"ALL"}, indexBy="locale")
-     * @Serializer\Exclude
      */
+    #[ORM\OneToMany(targetEntity: "Pixel\EventBundle\Entity\EventTranslation", mappedBy: "event", cascade: ["ALL"], indexBy: "locale")]
+    #[Serializer\Exclude]
     private $translations;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    #[ORM\Column(type: "string", length: 255, nullable: true)]
     private ?string $defaultLocale;
 
     private string $locale = 'fr';
@@ -121,9 +98,7 @@ class Event
         return $this->id;
     }
 
-    /**
-     * @Serializer\VirtualProperty(name="name")
-     */
+    #[Serializer\VirtualProperty(name: "name")]
     public function getName(): ?string
     {
         $translation = $this->getTranslation($this->locale);
@@ -158,9 +133,7 @@ class Event
         return $translation;
     }
 
-    /**
-     * @Serializer\VirtualProperty(name="description")
-     */
+    #[Serializer\VirtualProperty(name: "description")]
     public function getDescription(): ?string
     {
         $translation = $this->getTranslation($this->locale);
@@ -180,9 +153,7 @@ class Event
         return $this;
     }
 
-    /**
-     * @Serializer\VirtualProperty(name="route")
-     */
+    #[Serializer\VirtualProperty(name: "route")]
     public function getRoutePath(): ?string
     {
         $translation = $this->getTranslation($this->locale);
@@ -203,9 +174,9 @@ class Event
     }
 
     /**
-     * @Serializer\VirtualProperty(name="seo")
      * @return array<mixed>|null
      */
+    #[Serializer\VirtualProperty(name: "seo")]
     public function getSeo(): ?array
     {
         $translation = $this->getTranslation($this->locale);
@@ -234,9 +205,9 @@ class Event
     }
 
     /**
-     * @Serializer\VirtualProperty(name="ext")
      * @return array<mixed>|null
      */
+    #[Serializer\VirtualProperty(name: "ext")]
     public function getExt(): ?array
     {
         $translation = $this->getTranslation($this->locale);
@@ -350,10 +321,9 @@ class Event
 
     /**
      * @return array<string, mixed>
-     *
-     * @Serializer\VirtualProperty()
-     * @Serializer\SerializedName("image")
      */
+    #[Serializer\VirtualProperty()]
+    #[Serializer\SerializedName("image")]
     public function getImageData(): ?array
     {
         if ($image = $this->getImage()) {
