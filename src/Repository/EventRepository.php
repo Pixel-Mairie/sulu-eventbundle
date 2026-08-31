@@ -44,6 +44,26 @@ class EventRepository extends EntityRepository implements DataProviderRepository
         return $event;
     }
 
+    public function findByIdWithJoins(int $id, string $locale): ?Event
+    {
+        $event = $this->createQueryBuilder('e')
+            ->addSelect('t', 'image', 'pdf')
+            ->leftJoin('e.translations', 't')
+            ->leftJoin('e.image', 'image')
+            ->leftJoin('e.pdf', 'pdf')
+            ->where('e.id = :id')
+            ->setParameter('id', $id)
+            ->getQuery()
+            ->getOneOrNullResult();
+
+        if (! $event) {
+            return null;
+        }
+
+        $event->setLocale($locale);
+        return $event;
+    }
+
     /**
      * @return array<Event>
      */
@@ -86,7 +106,7 @@ class EventRepository extends EntityRepository implements DataProviderRepository
         $deactivateDate = (new \DateTimeImmutable())->modify("-" . $nbDays . " days");
 
         $query = $this->createQueryBuilder('e')
-            ->where("e.enabled = 1 AND (e.startDate <= :deactivateDate OR (e.endDate IS NOT NULL AND e.endDate <= :deactivateDate))")
+            ->where("e.enabled = 1 AND ((e.endDate IS NULL AND e.startDate <= :deactivateDate) OR (e.endDate IS NOT NULL AND e.endDate <= :deactivateDate))")
             ->setParameter("deactivateDate", $deactivateDate->format("Y-m-d H:i:s"));
 
         return $query->getQuery()->getResult();

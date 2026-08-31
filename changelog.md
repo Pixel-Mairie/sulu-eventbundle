@@ -1,5 +1,12 @@
 # Changelog
 
+## 2.7.1 (31/08/2026)
+
+- Fix title length for references
+- Fix past event retrieving for the deactivating events command
+- Fix deprecation of Sulu 2.6.25
+- Fix h1 for event view
+
 ## 2.7.0 (04/05/2026)
 
 + Add reference for Sulu 2.6

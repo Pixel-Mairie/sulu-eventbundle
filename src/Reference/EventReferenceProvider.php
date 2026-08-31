@@ -23,7 +23,7 @@ class EventReferenceProvider
             Event::RESOURCE_KEY,
             (string) $event->getId(),
             $locale,
-            $event->getName() ?? '',
+            mb_substr($event->getName() ?? '', 0, 191),
             $context,
             ['id' => $event->getId(), 'locale' => $locale],
         );
